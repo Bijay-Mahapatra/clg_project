@@ -1,0 +1,761 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COVID Detection - Secure Authentication Portal</title>
+    <meta name="description" content="Secure authentication portal for COVID Detection System">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #3f37c9;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --info: #4895ef;
+            
+            /* Solid background colors */
+            --bg-color: #f5f7fa;
+            --text-color: #212529;
+            --card-bg: #ffffff;
+            --input-bg: #ffffff;
+            --border-color: #e9ecef;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Dark mode colors */
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --text-color: #f8f9fa;
+            --card-bg: #1e1e1e;
+            --input-bg: #2d2d2d;
+            --border-color: #333333;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .auth-container {
+            width: 100%;
+            max-width: 450px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .auth-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        
+        .auth-header {
+            text-align: center;
+            padding: 30px 0 20px;
+            position: relative;
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .auth-header img {
+            width: 90px;
+            height: 90px;
+            margin-bottom: 15px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .auth-header img:hover {
+            transform: scale(1.05);
+        }
+        
+        .auth-header h2 {
+            color: var(--text-color);
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            letter-spacing: -0.5px;
+        }
+        
+        .auth-header p {
+            color: var(--gray);
+            font-size: 0.95rem;
+            max-width: 80%;
+            margin: 0 auto;
+        }
+        
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .theme-toggle:hover {
+            transform: rotate(30deg);
+        }
+        
+        .auth-tabs {
+            display: flex;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            position: relative;
+        }
+        
+        .auth-tab {
+            flex: 1;
+            padding: 16px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+        
+        .auth-tab:hover {
+            color: white;
+        }
+        
+        .auth-tab.active {
+            color: white;
+            font-weight: 600;
+        }
+        
+        .auth-tab-indicator {
+            position: absolute;
+            height: 100%;
+            width: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            left: 0;
+            top: 0;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border-radius: 5px 0 0 0;
+        }
+        
+        .auth-content {
+            padding: 25px;
+            position: relative;
+            height: 580px;
+            overflow-y: auto;
+            background: var(--card-bg);
+        }
+        
+        .auth-forms-container {
+            position: relative;
+            height: 100%;
+            width: 100%;
+        }
+        
+        .auth-form {
+            position: absolute;
+            width: 100%;
+            height: auto;
+            top: 0;
+            left: 0;
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.4s ease;
+            background: var(--card-bg);
+            padding: 0 5px;
+        }
+        
+        .auth-form.login {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        .auth-form.signup {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        
+        .auth-form.signup.active {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        .auth-form.login.inactive {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+        
+        .form-group {
+            margin-bottom: 22px;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-color);
+            font-size: 0.95rem;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 13px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 15px;
+            background: var(--input-bg);
+            color: var(--text-color);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+            outline: none;
+        }
+        
+        .input-icon {
+            position: absolute;
+            right: 15px;
+            top: 42px;
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, var(--primary-dark), var(--secondary));
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+        
+        .btn:hover::before {
+            left: 0;
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .file-upload-wrapper {
+            position: relative;
+            margin-top: 5px;
+        }
+        
+        .file-upload-label {
+            display: block;
+            padding: 12px 15px;
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            background-color: var(--input-bg);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .file-upload-label:hover {
+            border-color: var(--primary);
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+        
+        .file-upload-label i {
+            margin-right: 8px;
+            color: var(--primary);
+        }
+        
+        .file-upload-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .file-upload-text {
+            display: block;
+            margin-top: 5px;
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+        
+        .auth-footer {
+            text-align: center;
+            margin-top: 25px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .auth-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .auth-footer a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+        
+        .password-strength {
+            height: 4px;
+            background: var(--border-color);
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        
+        .strength-meter {
+            height: 100%;
+            width: 0;
+            transition: all 0.3s ease;
+        }
+        
+        /* Loading spinner */
+        .spinner {
+            display: none;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Alert notification */
+        .alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            transform: translateX(200%);
+            transition: transform 0.4s ease;
+            max-width: 90%;
+        }
+        
+        .alert.show {
+            transform: translateX(0);
+        }
+        
+        .alert.success {
+            background-color: var(--success);
+        }
+        
+        .alert.error {
+            background-color: var(--danger);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .auth-container {
+                max-width: 100%;
+                border-radius: 10px;
+            }
+            
+            .auth-content {
+                padding: 20px;
+                height: 600px;
+            }
+            
+            .auth-header h2 {
+                font-size: 1.6rem;
+            }
+            
+            .auth-header p {
+                font-size: 0.85rem;
+            }
+            
+            .form-control {
+                padding: 12px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-header">
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                <i class="fas fa-moon"></i>
+            </button>
+            <img src="{% static 'images/logo.png' %}" alt="COVID Detection Logo" class="logo">
+            <h2>COVID Detection Portal</h2>
+            <p>Secure authentication to access our services</p>
+        </div>
+        
+        <div class="auth-tabs">
+            <div class="auth-tab active" onclick="showTab('login')" role="tab" aria-selected="true">Login</div>
+            <div class="auth-tab" onclick="showTab('signup')" role="tab" aria-selected="false">Sign Up</div>
+            <div class="auth-tab-indicator" id="tabIndicator"></div>
+        </div>
+        
+        <div class="auth-content">
+            <div class="auth-forms-container">
+                <!-- Login Form -->
+                <div id="login-form" class="auth-form login" role="tabpanel">
+                    <form id="loginForm">
+                        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                        <div class="form-group">
+                            <label for="loginEmail">Email Address</label>
+                            <input type="email" id="loginEmail" class="form-control" placeholder="Enter your email" required aria-required="true">
+                            <i class="fas fa-envelope input-icon" aria-hidden="true"></i>
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Password</label>
+                            <input type="password" id="loginPassword" class="form-control" placeholder="Enter your password" required aria-required="true">
+                            <i class="fas fa-lock input-icon" aria-hidden="true"></i>
+                        </div>
+                        <button type="button" class="btn" onclick="handleLogin()" id="loginBtn">
+                            <span class="btn-text">Login</span>
+                            <div class="spinner" id="loginSpinner"></div>
+                        </button>
+                        
+                        <div class="auth-footer">
+                            <a href="#" onclick="showForgotPassword()">Forgot password?</a>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Signup Form -->
+                <div id="signup-form" class="auth-form signup" role="tabpanel" hidden>
+                    <form id="signupForm">
+                        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                        <div class="form-group">
+                            <label for="signupFullName">Full Name</label>
+                            <input type="text" id="signupFullName" class="form-control" placeholder="Enter your full name" required aria-required="true">
+                            <i class="fas fa-user input-icon" aria-hidden="true"></i>
+                        </div>
+                        <div class="form-group">
+                            <label for="signupEmail">Email Address</label>
+                            <input type="email" id="signupEmail" class="form-control" placeholder="Enter your email" required aria-required="true">
+                            <i class="fas fa-envelope input-icon" aria-hidden="true"></i>
+                        </div>
+                        <div class="form-group">
+                            <label for="signupPassword">Password</label>
+                            <input type="password" id="signupPassword" class="form-control" placeholder="Create a password (min 6 chars)" required aria-required="true">
+                            <i class="fas fa-lock input-icon" aria-hidden="true"></i>
+                            <div class="password-strength">
+                                <div class="strength-meter" id="passwordStrength"></div>
+                            </div>
+                            <small class="password-hint" style="display: block; margin-top: 5px; color: var(--gray); font-size: 0.8rem;">
+                                Use at least 6 characters with a mix of letters, numbers & symbols
+                            </small>
+                        </div>
+                        <div class="form-group">
+                            <label>Upload Document (JPG/JPEG/PDF)</label>
+                            <div class="file-upload-wrapper">
+                                <label class="file-upload-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span id="file-upload-name">Choose file...</span>
+                                </label>
+                                <input type="file" id="documentUpload" class="file-upload-input" accept=".jpg,.jpeg,.pdf" aria-label="Upload document">
+                                <small class="file-upload-text">Max file size: 2MB (Accepted: JPG, JPEG, PDF)</small>
+                            </div>
+                        </div>
+                        <button type="button" class="btn" onclick="handleSignup()" id="signupBtn">
+                            <span class="btn-text">Create Account</span>
+                            <div class="spinner" id="signupSpinner"></div>
+                        </button>
+                        
+                        <div class="auth-footer">
+                            Already have an account? <a href="#" onclick="showTab('login')">Sign In</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="alert" class="alert" role="alert" aria-live="assertive"></div>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+        
+        // Check for saved theme preference or use system preference
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark' || (!currentTheme && prefersDarkScheme.matches)) {
+            document.body.setAttribute('data-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            document.body.setAttribute('data-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.body.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                document.body.setAttribute('data-theme', 'light');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.body.setAttribute('data-theme', 'dark');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // Tab switching with slide animation
+        function showTab(tabName) {
+            const loginForm = document.getElementById('login-form');
+            const signupForm = document.getElementById('signup-form');
+            const tabs = document.querySelectorAll('.auth-tab');
+            const indicator = document.getElementById('tabIndicator');
+            
+            // Update tabs
+            tabs.forEach(tab => {
+                const isActive = tab.textContent.toLowerCase().includes(tabName);
+                tab.classList.toggle('active', isActive);
+                tab.setAttribute('aria-selected', isActive);
+            });
+            
+            // Move indicator
+            indicator.style.left = tabName === 'login' ? '0' : '50%';
+            
+            // Slide forms
+            if (tabName === 'login') {
+                loginForm.classList.remove('inactive');
+                loginForm.classList.add('login');
+                signupForm.classList.remove('active');
+                signupForm.classList.add('signup');
+                loginForm.removeAttribute('hidden');
+                signupForm.setAttribute('hidden', 'true');
+            } else {
+                loginForm.classList.remove('login');
+                loginForm.classList.add('inactive');
+                signupForm.classList.remove('signup');
+                signupForm.classList.add('active');
+                signupForm.removeAttribute('hidden');
+                loginForm.setAttribute('hidden', 'true');
+            }
+        }
+
+        // Password strength indicator
+        document.getElementById('signupPassword').addEventListener('input', function() {
+            const password = this.value;
+            const strengthBar = document.getElementById('passwordStrength');
+            let strength = 0;
+            
+            if (password.length > 0) strength += 20;
+            if (password.length >= 6) strength += 20;
+            if (/[A-Z]/.test(password)) strength += 20;
+            if (/[0-9]/.test(password)) strength += 20;
+            if (/[^A-Za-z0-9]/.test(password)) strength += 20;
+            
+            strengthBar.style.width = strength + '%';
+            
+            if (strength < 40) {
+                strengthBar.style.background = 'var(--danger)';
+            } else if (strength < 70) {
+                strengthBar.style.background = 'var(--warning)';
+            } else {
+                strengthBar.style.background = 'var(--success)';
+            }
+        });
+
+        // Document upload handler
+        document.getElementById('documentUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const fileName = document.getElementById('file-upload-name');
+            
+            if (file) {
+                if (file.size > 2 * 1024 * 1024) {
+                    showAlert('File size should be less than 2MB', 'error');
+                    this.value = '';
+                    fileName.textContent = 'Choose file...';
+                    return;
+                }
+                
+                const validTypes = ['image/jpeg', 'application/pdf'];
+                if (!validTypes.includes(file.type)) {
+                    showAlert('Only JPG, JPEG, and PDF files are allowed', 'error');
+                    this.value = '';
+                    fileName.textContent = 'Choose file...';
+                    return;
+                }
+                
+                fileName.textContent = file.name;
+            } else {
+                fileName.textContent = 'Choose file...';
+            }
+        });
+
+        // Show alert message
+        function showAlert(message, type) {
+            const alert = document.getElementById('alert');
+            alert.textContent = message;
+            alert.className = `alert ${type} show`;
+            
+            setTimeout(() => {
+                alert.classList.remove('show');
+            }, 3000);
+        }
+
+        // Show loading state
+        function showLoading(buttonId, spinnerId, show) {
+            const button = document.getElementById(buttonId);
+            const spinner = document.getElementById(spinnerId);
+            const buttonText = button.querySelector('.btn-text');
+            
+            if (show) {
+                button.disabled = true;
+                buttonText.style.visibility = 'hidden';
+                spinner.style.display = 'block';
+            } else {
+                button.disabled = false;
+                buttonText.style.visibility = 'visible';
+                spinner.style.display = 'none';
+            }
+        }
+
+        // Forgot password handler
+        function showForgotPassword() {
+            const email = prompt('Please enter your email address to reset your password:');
+            if (email) {
+                showAlert('Password reset link has been sent to your email', 'success');
+            }
+        }
+
+        // Login handler
+        function handleLogin() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            
+            if (!email || !password) {
+                showAlert('Please fill in all fields', 'error');
+                return;
+            }
+            
+            showLoading('loginBtn', 'loginSpinner', true);
+            
+            // Simulate API call
+            setTimeout(() => {
+                showLoading('loginBtn', 'loginSpinner', false);
+                showAlert('Login successful! Redirecting...', 'success');
+                // In a real app, you would redirect after successful login
+                // window.location.href = '/dashboard';
+            }, 1500);
+        }
+
+        // Signup handler
+        function handleSignup() {
+            const fullName = document.getElementById('signupFullName').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            const password = document.getElementById('signupPassword').value.trim();
+            const documentUpload = document.getElementById('documentUpload').files[0];
+            
+            if (!fullName || !email || !password) {
+                showAlert('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showAlert('Password must be at least 6 characters', 'error');
+                return;
+            }
+            
+            if (!documentUpload) {
+                showAlert('Please upload a document (JPG/JPEG/PDF)', 'error');
+                return;
+            }
+            
+            showLoading('signupBtn', 'signupSpinner', true);
+            
+            // Simulate API call
+            setTimeout(() => {
+                showLoading('signupBtn', 'signupSpinner', false);
+                showAlert('Account created successfully!', 'success');
+                showTab('login');
+            }, 2000);
+        }
+
+        // Initialize the forms
+        document.addEventListener('DOMContentLoaded', function() {
+            // Make sure login form is visible by default
+            document.getElementById('login-form').classList.add('login');
+            document.getElementById('signup-form').classList.add('signup');
+            
+            // Add focus styles for accessibility
+            const focusableElements = document.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+            focusableElements.forEach(el => {
+                el.addEventListener('focus', function() {
+                    this.style.outline = '2px solid var(--primary)';
+                    this.style.outlineOffset = '2px';
+                });
+                el.addEventListener('blur', function() {
+                    this.style.outline = 'none';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prediction Result</title>
+</head>
+<body>
+    <h1>Prediction Result</h1>
+    <form method="post">
+        {% csrf_token %}
+        {% for i in range_1_to_18 %}
+        <label>Feature {{ i }}:</label>
+        <input type="radio" name="feature_{{ i }}" value="1"> Yes
+        <input type="radio" name="feature_{{ i }}" value="0"> No<br>
+        {% endfor %}
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
