@@ -5,8 +5,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('signin_signup.urls')),
-    path('home/', include('predictor.urls')),  # Home page
+    #path('', include('signin_signup.urls')),
+    path('', include('predictor.urls')),  # Home page
       # Authentication routes
 ]
 
