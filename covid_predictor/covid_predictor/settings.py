@@ -39,8 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'predictor',
-    'signin_signup'
+    'custom_auth.apps.AuthConfig'
 ]
+AUTH_USER_MODEL = 'custom_auth.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -78,17 +79,15 @@ WSGI_APPLICATION = 'covid_predictor.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'covid_predictor',
-        'USER': 'covid_user',
-        'PASSWORD': 'securepassword',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'mydb',
+        'USER': 'postgres',
+        'PASSWORD': '7854',
         'HOST': 'localhost',
-        'PORT': '3306',
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        }
+        'PORT': '5432',
     }
 }
+
 
 
 # Password validation
@@ -134,12 +133,12 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-LOGIN_URL = '/auth/'
-LOGOUT_REDIRECT_URL = '/auth/'
+LOGIN_URL = 'login'
+LOGOUT_REDIRECT_URL = 'home'
 #LOGIN_URL = '/auth/'  # Redirect unauthenticated users to the custom login page
-#LOGIN_REDIRECT_URL = '/'  # Redirect to the home page after login
+LOGIN_REDIRECT_URL = 'home/'  # Redirect to the home page after login
 #LOGOUT_REDIRECT_URL = '/'  # Redirect to the home page after logout
-auth_user_model = 'signin_signup.CustomUser'
+#auth_user_model = 'signin_signup.CustomUser'
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

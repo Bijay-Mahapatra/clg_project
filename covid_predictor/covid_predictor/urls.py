@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #path('', include('signin_signup.urls')),
+    path('auth/', include('custom_auth.urls')),
     path('', include('predictor.urls')),  # Home page
       # Authentication routes
 ]

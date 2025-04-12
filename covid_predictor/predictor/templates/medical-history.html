@@ -273,6 +273,13 @@
             color: #F44336;
         }
 
+        .test-confidence {
+            flex: 1;
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
         .test-actions {
             flex: 1;
             display: flex;
@@ -291,56 +298,6 @@
 
         .btn-icon:hover {
             color: var(--primary-color);
-        }
-
-        /* Symptoms Tab */
-        .symptom-chart-container {
-            height: 250px;
-            margin-bottom: 30px;
-        }
-
-        .symptom-log {
-            border: 1px solid #eee;
-            border-radius: 8px;
-        }
-
-        .log-item {
-            padding: 15px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .log-date {
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .log-symptoms {
-            color: var(--text-light);
-            margin-bottom: 5px;
-            font-size: 14px;
-        }
-
-        .log-severity {
-            display: inline-block;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .log-severity.low {
-            background-color: rgba(76, 175, 80, 0.2);
-            color: #4CAF50;
-        }
-
-        .log-severity.medium {
-            background-color: rgba(255, 152, 0, 0.2);
-            color: #FF9800;
-        }
-
-        .log-severity.high {
-            background-color: rgba(244, 67, 54, 0.2);
-            color: #F44336;
         }
 
         /* Vaccines Tab */
@@ -394,20 +351,11 @@
                 </div>
                 <div class="nav-links">
                     <div class="nav-item">
-                        <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-                    </div>
-                    <div class="nav-item">
-                        <a href="#"><i class="fas fa-home"></i><a href="{% url 'home' %}"> Home</a>
-                    </div>
-                    <div class="nav-item">
-                        <a href="#"><i class="fas fa-chart-line"></i> Predictions</a>
+                        <a href="{% url 'home' %}">Home</a>
                     </div>
                     <div class="user-profile">
                         <img src="{% static 'images/user.png' %}" alt="User" class="profile-img" id="navbarProfile" onclick="toggleProfileMenu()">
                         <div class="profile-menu" id="profileMenu">
-                            <div class="profile-item" onclick="window.location.href='dashboard.html'">
-                                <i class="fas fa-tachometer-alt"></i> Dashboard
-                            </div>
                             <div class="profile-item" onclick="window.location.href='account.html'">
                                 <i class="fas fa-user-circle"></i> My Account
                             </div>
@@ -435,83 +383,20 @@
             <div class="medical-history-container">
                 <div class="medical-tabs">
                     <div class="medical-tab active" onclick="switchTab('tests')">COVID Tests</div>
-                    <div class="medical-tab" onclick="switchTab('symptoms')">Symptom Log</div>
                     <div class="medical-tab" onclick="switchTab('vaccines')">Vaccinations</div>
                 </div>
                 
                 <!-- Tests Tab -->
                 <div class="medical-content active" id="testsTab">
                     <div class="history-header">
-                        <h3>Past COVID-19 Test Results</h3>
+                        <h3>COVID-19 Test Results</h3>
                         <button class="btn btn-primary" onclick="addNewTest()">
                             <i class="fas fa-plus"></i> Add New Test
                         </button>
                     </div>
                     
-                    <div class="test-list">
-                        <div class="test-item">
-                            <div class="test-date">May 15, 2023</div>
-                            <div class="test-result negative">Negative</div>
-                            <div class="test-actions">
-                                <button class="btn-icon" onclick="viewTestDetails('test1')">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="btn-icon" onclick="downloadTestReport('test1')">
-                                    <i class="fas fa-download"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="test-item">
-                            <div class="test-date">March 28, 2023</div>
-                            <div class="test-result positive">Positive</div>
-                            <div class="test-actions">
-                                <button class="btn-icon" onclick="viewTestDetails('test2')">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="btn-icon" onclick="downloadTestReport('test2')">
-                                    <i class="fas fa-download"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="test-item">
-                            <div class="test-date">January 10, 2023</div>
-                            <div class="test-result negative">Negative</div>
-                            <div class="test-actions">
-                                <button class="btn-icon" onclick="viewTestDetails('test3')">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="btn-icon" onclick="downloadTestReport('test3')">
-                                    <i class="fas fa-download"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Symptoms Tab -->
-                <div class="medical-content" id="symptomsTab">
-                    <div class="history-header">
-                        <h3>Symptom History</h3>
-                        <button class="btn btn-primary" onclick="logNewSymptoms()">
-                            <i class="fas fa-plus"></i> Log Symptoms
-                        </button>
-                    </div>
-                    
-                    <div class="symptom-chart-container">
-                        <canvas id="symptomChart"></canvas>
-                    </div>
-                    
-                    <div class="symptom-log">
-                        <div class="log-item">
-                            <div class="log-date">May 10-15, 2023</div>
-                            <div class="log-symptoms">Fever, Dry Cough, Fatigue</div>
-                            <div class="log-severity medium">Moderate</div>
-                        </div>
-                        <div class="log-item">
-                            <div class="log-date">March 25-30, 2023</div>
-                            <div class="log-symptoms">High Fever, Shortness of Breath, Loss of Taste</div>
-                            <div class="log-severity high">Severe</div>
-                        </div>
+                    <div class="test-list" id="testResultsList">
+                        <!-- Test results will be dynamically inserted here -->
                     </div>
                 </div>
                 
@@ -575,72 +460,6 @@
                 tab.classList.remove('active');
             });
             event.target.classList.add('active');
-            
-            // Initialize chart if showing symptoms tab
-            if (tabId === 'symptoms') {
-                initSymptomChart();
-            }
-        }
-        
-        // Initialize symptom chart
-        function initSymptomChart() {
-            const ctx = document.getElementById('symptomChart').getContext('2d');
-            
-            // Sample data for symptom chart
-            const dates = ['Jan', 'Feb', 'Mar', 'Apr', 'May'];
-            const feverData = [2, 3, 4, 2, 1];
-            const coughData = [1, 2, 5, 3, 1];
-            const fatigueData = [1, 1, 4, 2, 0];
-            
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: dates,
-                    datasets: [
-                        {
-                            label: 'Fever',
-                            data: feverData,
-                            borderColor: '#FF6384',
-                            backgroundColor: 'rgba(255, 99, 132, 0.1)',
-                            tension: 0.3,
-                            fill: true
-                        },
-                        {
-                            label: 'Cough',
-                            data: coughData,
-                            borderColor: '#36A2EB',
-                            backgroundColor: 'rgba(54, 162, 235, 0.1)',
-                            tension: 0.3,
-                            fill: true
-                        },
-                        {
-                            label: 'Fatigue',
-                            data: fatigueData,
-                            borderColor: '#FFCE56',
-                            backgroundColor: 'rgba(255, 206, 86, 0.1)',
-                            tension: 0.3,
-                            fill: true
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Severity (1-5)'
-                            }
-                        }
-                    }
-                }
-            });
         }
         
         // Medical history actions
@@ -657,22 +476,80 @@
             // In a real app, this would open a form to add a new test result
         }
         
-        function logNewSymptoms() {
-            alert("Opening symptom logging form...");
-            // In a real app, this would open a form to log new symptoms
-        }
-        
         function addVaccineRecord() {
             alert("Opening vaccine record form...");
             // In a real app, this would open a form to add vaccine records
         }
-        
-        // Initialize symptom chart if on symptoms tab
+
+        // Function to render test results from ML model
+        function renderTestResults() {
+            const testResultsList = document.getElementById('testResultsList');
+            testResultsList.innerHTML = '';
+
+            // This would come from your backend/ML model
+            const testResults = [
+                {
+                    id: 'test1',
+                    date: new Date().toLocaleDateString(),
+                    result: 'positive', // This would come from your ML model
+                    confidence: 92, // Confidence score from your ML model
+                    symptoms: ['Fever', 'Cough', 'Fatigue']
+                },
+                {
+                    id: 'test2',
+                    date: new Date(Date.now() - 86400000 * 7).toLocaleDateString(),
+                    result: 'negative', // This would come from your ML model
+                    confidence: 87, // Confidence score from your ML model
+                    symptoms: ['Headache', 'Sore throat']
+                }
+            ];
+
+            testResults.forEach(test => {
+                const testItem = document.createElement('div');
+                testItem.className = 'test-item';
+                testItem.innerHTML = `
+                    <div class="test-date">${test.date}</div>
+                    <div class="test-result ${test.result}">${test.result === 'positive' ? 'Positive' : 'Negative'}</div>
+                    <div class="test-confidence">${test.confidence}% confidence</div>
+                    <div class="test-actions">
+                        <button class="btn-icon" onclick="viewTestDetails('${test.id}')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn-icon" onclick="downloadTestReport('${test.id}')">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                `;
+                testResultsList.appendChild(testItem);
+            });
+        }
+
+        // Initialize when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            if (document.getElementById('symptomsTab').classList.contains('active')) {
-                initSymptomChart();
-            }
+            // Load test results when page loads
+            renderTestResults();
         });
+
+        // In a real app, you would fetch test results from your backend/ML model
+        function getTestResultsFromML() {
+            // This would be replaced with an actual API call to your backend
+            return [
+                {
+                    id: 'test1',
+                    date: new Date().toLocaleDateString(),
+                    result: 'positive',
+                    confidence: 92,
+                    symptoms: ['Fever', 'Cough', 'Fatigue']
+                },
+                {
+                    id: 'test2',
+                    date: new Date(Date.now() - 86400000 * 7).toLocaleDateString(),
+                    result: 'negative',
+                    confidence: 87,
+                    symptoms: ['Headache', 'Sore throat']
+                }
+            ];
+        }
     </script>
 </body>
 </html>
